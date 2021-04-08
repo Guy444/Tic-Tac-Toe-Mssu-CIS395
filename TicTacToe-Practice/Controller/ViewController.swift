@@ -35,13 +35,10 @@ class ViewController: UIViewController {
         statusLabel.text = "\(ticTacToe.getTurn())'s Turn!"
     }
     @IBAction func buttonClicked(_ sender: UIButton) {
-        //Step 1 - Get the row number and column number from the button text (See hint in assignment instructions)
         //get Row Number
         let indexRow = 2
-        
         let charAtRow = (sender.titleLabel?.text?.index((sender.titleLabel?.text!.startIndex)!, offsetBy: indexRow))!
         let row = sender.titleLabel?.text?[charAtRow].wholeNumberValue! ?? -1
-        
         //get Col Number
         let indexCol = 0
         let charAt = (sender.titleLabel?.text?.index((sender.titleLabel?.text!.startIndex)!, offsetBy: indexCol))!
@@ -55,9 +52,13 @@ class ViewController: UIViewController {
             images![col][row].image = UIImage(named: ticTacToe.getTurn())
            //Step 4 - Check for a winner, updating the status message and creating a countdown timer to reset the game if necessary
         if (ticTacToe.didWin() != " "){
-            
-            statusLabel.text = "\(ticTacToe.didWin()) Won!"
-           var resetTime = 15
+            if(ticTacToe.didWin() != "T"){
+                statusLabel.text = "\(ticTacToe.didWin()) Won!"
+            }
+            else{
+                statusLabel.text = "Tie!"
+            }
+           var resetTime = 10
             self.resetTimerLabel.text =  "Resetting game in \(resetTime) seconds"
             Timer.scheduledTimer(withTimeInterval:1.0,repeats: true){timer in
              resetTime -= 1
@@ -69,23 +70,19 @@ class ViewController: UIViewController {
                     for row in 0...2{
                         for col in 0...2{
                             self.images![row][col].image = UIImage(named: "blank")
-                }
-            }
+                                        }
+                                    }
                     timer.invalidate()
                 }
             }
         }
-           // Check the EggTimer assignment on Udemy for hints on creating the countdown timer
-        
-           //Step 5 - If no one won, make the *model* go to the next turn, get the current turn from the model and update the status message.
-            
+           
         else {
             ticTacToe.nextTurn()
         statusLabel.text = "\(ticTacToe.getTurn())'s Turn!"
             }
             
     }
-        //If placing the marker wasn't successful, change the status message, so the user knows what's wrong
         else{
             statusLabel.text = "That's an invalid location"
         }
